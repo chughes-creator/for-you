@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Proposal for One (1) Date</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Gochi+Hand&family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Layout: a tap-through phone-first deck on espresso flannel; one slide fills the screen, cream polaroids carry the photos, steps reveal one joke at a time. Single deliberate dark, earthy look. */
+:root{
+  --bg:#2A1C15;          /* espresso */
+  --card:#3A2920;        /* raised walnut surface */
+  --line:rgba(242,228,207,.10);
+  --ink:#F2E4CF;         /* cream, text on dark */
+  --ink-soft:#C9B39A;    /* tan */
+  --paper-ink:#2E1F17;   /* text on cream paper */
+  --pink:#C8673B;        /* rust: primary accent */
+  --pink-deep:#E3A15F;   /* warm amber: accent text on dark */
+  --rust-deep:#8E3F20;
+  --lilac:#9EA163;       /* olive */
+  --butter:rgba(184,134,47,.62);  /* ochre highlight */
+  --mint:rgba(142,145,85,.65);    /* olive highlight */
+  --sage:#B4BC78;
+  --paper:#F4EADB;       /* cream polaroid */
+  --tape:rgba(196,160,110,.8);
+  --display:"Bagel Fat One","Arial Rounded MT Bold","Trebuchet MS",system-ui,sans-serif;
+  --body:"Nunito",ui-rounded,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --hand:"Gochi Hand","Comic Sans MS","Marker Felt",cursive;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{height:100%}
+body{
+  height:100%;overflow:hidden;margin:0;
+  background-color:var(--bg);color:var(--ink);font-family:var(--body);
+  background-image:
+    radial-gradient(ellipse at 50% 40%,transparent 35%,rgba(10,5,2,.55) 100%),
+    repeating-linear-gradient(90deg,rgba(200,103,59,.10) 0 22px,transparent 22px 52px,rgba(242,228,207,.05) 52px 56px,transparent 56px 104px),
+    repeating-linear-gradient(0deg,rgba(200,103,59,.10) 0 22px,transparent 22px 52px,rgba(242,228,207,.05) 52px 56px,transparent 56px 104px);
+  background-attachment:fixed;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;-webkit-user-select:none;
+}
+
+/* floating hearts */
+.hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.hearts span{position:absolute;bottom:-50px;line-height:1;opacity:.32;filter:sepia(.55) saturate(.85);font-family:system-ui,"Apple Color Emoji","Segoe UI Emoji",sans-serif;animation:float linear infinite}
+@keyframes float{from{translate:0 0;rotate:-8deg}50%{translate:14px -55vh;rotate:8deg}to{translate:0 -115vh;rotate:-8deg}}
+
+/* stage + slides */
+.stage{position:relative;z-index:1;height:100%;cursor:pointer}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding-left:max(18px,env(safe-area-inset-left,0px));
+  padding-right:max(18px,env(safe-area-inset-right,0px));
+  padding-block:18px 76px;
+  overflow-y:auto;overflow-x:hidden;
+  opacity:0;visibility:hidden;translate:42px 0;
+  transition:opacity .45s ease,translate .55s cubic-bezier(.2,.9,.3,1),visibility 0s linear .55s;
+}
+.slide.past{translate:-42px 0}
+.slide.cur{opacity:1;visibility:visible;translate:0 0;transition:opacity .45s ease,translate .55s cubic-bezier(.2,.9,.3,1),visibility 0s}
+.wrap{width:100%;max-width:1060px;display:flex;flex-direction:column;gap:18px;margin-block:auto}
+.split{display:grid;gap:18px;align-items:center}
+.split > *{min-width:0}
+@media (min-width:860px) and (min-aspect-ratio:1/1){
+  .split{grid-template-columns:1fr 1fr;gap:56px}
+  .slide{padding-block:40px 90px}
+  .collage{width:min(100%,66dvh)}
+  .duo,.cats{width:min(100%,74dvh)}
+  .food{width:min(80%,48dvh)}
+}
+
+/* type */
+.eyebrow{font-family:var(--hand);font-size:clamp(18px,4.6vw,24px);color:var(--pink-deep);letter-spacing:.02em;margin:0;rotate:-2deg;transform-origin:left}
+h1,h2{font-family:var(--display);font-weight:400;margin:0;line-height:1.02;text-wrap:balance;letter-spacing:.005em}
+h1{font-size:clamp(40px,11vw,92px)}
+h2{font-size:clamp(30px,8vw,60px)}
+.lead{font-size:clamp(17px,4.4vw,23px);line-height:1.4;font-weight:700;margin:0;max-width:34ch;text-wrap:pretty}
+.soft{color:var(--ink-soft);font-weight:600}
+.hand{font-family:var(--hand)}
+mark{background:linear-gradient(transparent 52%,var(--butter) 52%,var(--butter) 92%,transparent 92%);color:inherit;padding:0 .08em}
+mark.pk{background:linear-gradient(transparent 52%,rgba(200,103,59,.7) 52%,rgba(200,103,59,.7) 92%,transparent 92%)}
+mark.mt{background:linear-gradient(transparent 52%,var(--mint) 52%,var(--mint) 92%,transparent 92%)}
+.small{font-size:clamp(14px,3.6vw,17px)}
+
+/* reveal steps */
+.rv{opacity:0;translate:0 18px;scale:.96;transition:opacity .4s ease var(--d,0s),translate .6s cubic-bezier(.25,1.5,.45,1) var(--d,0s),scale .6s cubic-bezier(.25,1.5,.45,1) var(--d,0s)}
+.rv[data-fx="pop"]{scale:.35;translate:0 0}
+.rv[data-fx="drop"]{translate:0 -70px;scale:1}
+.rv[data-fx="left"]{translate:-40px 0;scale:1}
+.rv[data-fx="right"]{translate:40px 0;scale:1}
+.rv.on{opacity:1;translate:0 0;scale:1}
+.rv[data-fx="stamp"]{transition:none;opacity:0}
+.rv[data-fx="stamp"].on{animation:stamp .5s cubic-bezier(.3,1.6,.5,1) var(--d,0s) both}
+@keyframes stamp{0%{opacity:0;scale:2.6}55%{opacity:1;scale:.9}100%{opacity:1;scale:1}}
+
+/* polaroid */
+.pol{margin:0;background:var(--paper);padding:7px 7px 0;box-shadow:0 1px 2px rgba(0,0,0,.18),0 10px 26px -8px rgba(0,0,0,.35);rotate:var(--r,0deg);position:relative}
+.pol::before{content:"";position:absolute;top:-9px;left:50%;width:42%;height:18px;translate:-50% 0;rotate:-3deg;background:var(--tape);box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.pol.t2::before{background:rgba(200,103,59,.75)}
+.pol.t3::before{background:rgba(142,145,85,.8)}
+.pol .ph{position:relative;overflow:hidden;background:#E8DCCB;container-type:inline-size}
+.pol img,.pol video{display:block;width:100%;height:100%;object-fit:cover}
+.pol figcaption{font-family:var(--hand);font-size:clamp(13px,3.4vw,19px);text-align:center;padding:5px 2px 7px;line-height:1.15;color:var(--paper-ink)}
+
+/* title */
+.title-card{display:flex;flex-direction:column;gap:14px;align-items:flex-start;max-width:760px}
+.title-card h1 .num{display:inline-block;font-size:.5em;vertical-align:.45em;color:var(--pink-deep)}
+.meta{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-weight:700;font-size:clamp(15px,3.9vw,19px);margin:0;padding:14px 18px;background:var(--card);border:2px dashed var(--lilac);border-radius:14px}
+.meta dt{color:var(--ink-soft);font-weight:600}
+.meta dd{margin:0}
+.badge{font-family:var(--hand);font-size:clamp(16px,4.2vw,22px);color:var(--pink-deep);border:3px solid var(--pink-deep);border-radius:10px;padding:2px 12px;rotate:-6deg;align-self:flex-end;margin-top:-6px}
+.hint{font-family:var(--hand);font-size:18px;color:var(--ink-soft);animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{50%{translate:6px 0}}
+
+/* chart */
+.chart{width:100%;max-width:520px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 12px 6px;box-shadow:0 10px 26px -12px rgba(0,0,0,.35)}
+.chart svg{display:block;width:100%;height:auto}
+.chart .line{fill:none;stroke-width:5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s cubic-bezier(.5,0,.3,1) .2s}
+.chart.on .line{stroke-dashoffset:0}
+.chart .l2{transition-delay:.45s}
+.chart text{font-family:var(--hand);fill:var(--ink)}
+.chart .ax{stroke:var(--ink-soft);stroke-width:1.5;fill:none}
+.chart .grid{stroke:rgba(242,228,207,.08);stroke-width:1}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--hand);font-size:17px;padding:4px 6px 6px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:18px;height:6px;border-radius:3px}
+
+/* ideas */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,4vw,30px);width:min(100%,62dvh);margin-inline:auto;padding-top:10px}
+.duo .ph{aspect-ratio:4/5;background:#fff}
+.duo img{object-fit:contain}
+
+/* cool stuff collage */
+.collage{position:relative;width:min(100%,50dvh);aspect-ratio:1/1;margin-inline:auto;margin-top:8px}
+.collage .pol{position:absolute}
+.c-sant{left:0;top:0;width:56%;z-index:1}
+.c-sant .ph{aspect-ratio:4/3}
+.c-ecl{left:3%;top:52%;width:56%;z-index:2}
+.c-ecl .ph{aspect-ratio:16/9}
+.c-balc{right:0;top:2%;width:45%;z-index:3}
+.c-balc .ph{aspect-ratio:619/1100}
+.note{position:absolute;left:5%;top:11%;width:78%;font-family:var(--hand);font-size:14px;font-size:10.5cqi;line-height:1.05;color:#fff;text-shadow:0 1px 3px rgba(40,20,60,.55);rotate:-6deg}
+.arrow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.arrow path{fill:none;stroke:#fff;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 1.5px rgba(40,20,60,.55));stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .8s ease .35s}
+.c-balc.on .arrow path{stroke-dashoffset:0}
+.c-balc .note{opacity:0;transition:opacity .4s ease .25s}
+.c-balc.on .note{opacity:1}
+
+/* qualifications */
+.quals{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.qual{display:grid;grid-template-columns:clamp(84px,24vw,128px) 1fr;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 14px 10px 10px}
+.qual > *{min-width:0}
+.qual .pol{padding:5px 5px 0;--r:-3deg}
+.qual .pol::before{height:12px;top:-6px}
+.qual .ph{aspect-ratio:3/4}
+.qual p{margin:0;font-weight:700;font-size:clamp(15px,3.9vw,19px);line-height:1.35}
+.qual .trophy{font-size:1.3em}
+.bars{display:flex;flex-direction:column;gap:8px;grid-column:1/-1}
+.bar{display:grid;grid-template-columns:7.5em 1fr auto;gap:10px;align-items:center;font-weight:700;font-size:clamp(14px,3.7vw,17px)}
+.bar b{display:block;height:14px;border-radius:7px;background:rgba(242,228,207,.10);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:7px;background:linear-gradient(90deg,var(--lilac),var(--pink));transition:width 1.2s cubic-bezier(.3,1,.4,1) .3s}
+.on .bar i{width:var(--w)}
+.bar em{font-family:var(--hand);font-style:normal;font-size:1.1em;color:var(--pink-deep)}
+
+/* cat */
+.cats{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(14px,4vw,30px);align-items:center;width:min(100%,64dvh);margin-inline:auto;padding-top:10px}
+.cats .p1 .ph{aspect-ratio:1/1}
+.cats .p2 .ph{aspect-ratio:9/16}
+
+/* cooking */
+.vs{display:flex;flex-direction:column;gap:10px}
+.vs p{margin:0;font-family:var(--display);font-size:clamp(26px,7vw,46px);line-height:1.1;display:flex;align-items:center;gap:.3em;flex-wrap:wrap}
+.vs .who{font-family:var(--hand);font-size:.62em;color:var(--ink-soft);min-width:2.6em}
+.vs .emo{font-family:system-ui,"Apple Color Emoji","Segoe UI Emoji",sans-serif}
+.food{width:min(70%,34dvh);margin-inline:auto}
+.food .ph{aspect-ratio:4/5}
+.food img{object-position:50% 62%}
+
+/* fine print */
+.fine{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.fine li{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 16px;font-weight:700;font-size:clamp(15px,4vw,20px);line-height:1.3}
+.fine li > span:first-child{flex:1 1 13em;min-width:0}
+.stamp{font-family:var(--display);font-size:clamp(14px,3.6vw,18px);color:var(--sage);border:3px solid var(--sage);border-radius:8px;padding:2px 10px;rotate:-8deg;letter-spacing:.06em;--d:.35s}
+.witches{display:inline-flex;gap:4px;font-size:1.5em;font-family:system-ui,"Apple Color Emoji","Segoe UI Emoji",sans-serif}
+.on .witches span{display:inline-block;animation:bob 1.2s ease-in-out infinite}
+.witches span:nth-child(2){animation-delay:.15s!important}
+.witches span:nth-child(3){animation-delay:.3s!important}
+@keyframes bob{50%{translate:0 -7px;rotate:6deg}}
+.fine .mini{width:clamp(64px,17vw,96px);--r:4deg;padding:4px 4px 0}
+.fine .mini::before{height:11px;top:-5px}
+.fine .mini .ph{aspect-ratio:3/4}
+.fine .mini figcaption{font-size:12px;padding:3px 0 4px}
+
+/* the question */
+.ask-slide .wrap{align-items:center;text-align:center}
+.ask-slide h1{font-size:clamp(44px,12.5vw,104px)}
+.btns{display:flex;gap:16px;align-items:center;justify-content:center;min-height:120px;flex-wrap:wrap}
+.btn{font-family:var(--display);font-size:clamp(22px,6vw,32px);border:0;border-radius:999px;padding:.45em 1.3em;cursor:pointer;transition:scale .3s cubic-bezier(.3,1.6,.5,1),left .35s cubic-bezier(.3,1.3,.5,1),top .35s cubic-bezier(.3,1.3,.5,1),background .2s}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.yes{background:var(--pink);color:var(--ink);box-shadow:0 6px 0 var(--rust-deep),0 14px 24px -8px rgba(0,0,0,.6);scale:var(--ys,1)}
+.yes:hover{background:#B25930}
+.yes:active{translate:0 4px;box-shadow:0 2px 0 var(--rust-deep)}
+.no{background:var(--card);color:var(--ink-soft);border:3px solid var(--lilac);font-size:clamp(18px,5vw,26px);white-space:nowrap;z-index:5}
+.no.loose{position:absolute;margin:0}
+.approved{display:flex;flex-direction:column;align-items:center;gap:14px}
+.approved .big{font-family:var(--display);font-size:clamp(30px,9vw,64px);color:var(--sage);border:5px solid var(--sage);border-radius:16px;padding:4px 22px;rotate:-6deg;background:rgba(42,28,21,.75)}
+.approved p{margin:0}
+.restart{font-family:var(--hand);font-size:18px;background:none;border:0;color:var(--ink-soft);text-decoration:underline;cursor:pointer;padding:8px}
+
+/* bottom nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px max(14px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));pointer-events:none}
+.nav button{pointer-events:auto;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:22px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px -4px rgba(0,0,0,.35);display:grid;place-items:center}
+.nav button:disabled{opacity:.35;cursor:default}
+.nav button:focus-visible{outline:3px solid var(--pink-deep);outline-offset:2px}
+.dots{display:flex;gap:6px;align-items:center;pointer-events:none}
+.dots svg{width:14px;height:14px;transition:scale .3s}
+.dots svg path{fill:rgba(200,103,59,.3);transition:fill .3s}
+.dots svg.seen path{fill:var(--pink)}
+.dots svg.now{scale:1.35}
+
+@media (prefers-reduced-motion:reduce){
+  .rv,.slide{transition:opacity .2s ease!important;translate:none!important;scale:1!important}
+  .rv[data-fx="stamp"].on{animation:none;opacity:1}
+  .hearts span,.hint,.on .witches span{animation:none!important}
+  .hearts{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="hearts" id="hearts" aria-hidden="true"></div>
+
+<main class="stage" id="stage">
+
+  <!-- 1 · title -->
+  <section class="slide" aria-label="Title">
+    <div class="wrap" style="align-items:center">
+      <div class="title-card">
+        <p class="eyebrow rv" data-s="0" style="--d:.1s">a very official document</p>
+        <h1 class="rv" data-s="0" style="--d:.2s">Proposal for One <span class="num">(1)</span> Date</h1>
+        <dl class="meta rv" data-s="0" style="--d:.35s">
+          <dt>to</dt><dd>you</dd>
+          <dt>from</dt><dd>Caleb</dd>
+          <dt>re</dt><dd>us, going on a date</dd>
+          <dt>status</dt><dd>awaiting your approval</dd>
+        </dl>
+        <span class="hint rv" data-s="0" style="--d:1s">tap anywhere to continue →</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · laughing -->
+  <section class="slide" aria-label="Reason 1">
+    <div class="wrap split">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <p class="eyebrow rv" data-s="0">reason no. 1</p>
+        <h2 class="rv" data-s="0" style="--d:.1s">We make each other <mark class="pk">laugh</mark></h2>
+        <p class="lead rv" data-s="1">Despite me bullying you, and you putting up with my random nonsense.</p>
+      </div>
+      <figure class="chart rv" data-s="2" style="margin:0">
+        <svg viewBox="0 0 340 210" role="img" aria-label="Chart: my bullying and your laughing rise together over time">
+          <line class="grid" x1="44" y1="50" x2="320" y2="50"/><line class="grid" x1="44" y1="100" x2="320" y2="100"/><line class="grid" x1="44" y1="150" x2="320" y2="150"/>
+          <path class="ax" d="M44 18 V176 H322"/>
+          <text x="183" y="200" text-anchor="middle" font-size="15">time spent talking →</text>
+          <text x="20" y="98" text-anchor="middle" font-size="15" transform="rotate(-90 20 98)">amount ↑</text>
+          <path class="line l1" pathLength="1" stroke="#9EA163" d="M50 168 C 100 156, 128 128, 168 112 S 252 56, 314 30"/>
+          <path class="line l2" pathLength="1" stroke="#C8673B" d="M50 172 C 104 164, 132 134, 172 120 S 256 64, 314 40"/>
+          <text x="232" y="132" font-size="17" transform="rotate(-8 232 132)">r ≈ 1.0 (!!)</text>
+        </svg>
+        <figcaption class="legend">
+          <span><i style="background:var(--lilac)"></i>me bullying you</span>
+          <span><i style="background:var(--pink)"></i>you laughing</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 3 · ideas -->
+  <section class="slide" aria-label="Reason 2">
+    <div class="wrap split">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <p class="eyebrow rv" data-s="0">reason no. 2</p>
+        <h2 class="rv" data-s="0" style="--d:.1s">I am great at <mark>proposing ideas</mark></h2>
+        <p class="lead rv" data-s="0" style="--d:.25s">Such as costumes that highlight your appearance &amp; strengths.</p>
+      </div>
+      <div class="duo">
+        <figure class="pol rv" data-s="1" data-fx="drop" style="--r:-5deg">
+          <div class="ph"><img src="img/duo.jpg" alt="The Duolingo owl from behind"></div>
+          <figcaption>highlights: appearance</figcaption>
+        </figure>
+        <figure class="pol t2 rv" data-s="2" data-fx="drop" style="--r:4deg">
+          <div class="ph"><img src="img/jorgen.jpg" alt="Jorgen von Strangle, very muscular cartoon fairy"></div>
+          <figcaption>highlights: strengths</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · cool stuff -->
+  <section class="slide" aria-label="Reason 3">
+    <div class="wrap split">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <p class="eyebrow rv" data-s="0">reason no. 3</p>
+        <h2 class="rv" data-s="0" style="--d:.1s">I do a lot of <mark class="mt">cool shit</mark></h2>
+        <p class="lead rv" data-s="4">So through osmosis, you will now be a part of said cool shit.</p>
+      </div>
+      <div class="collage">
+        <figure class="pol c-sant rv" data-s="1" data-fx="left" style="--r:-4deg">
+          <div class="ph"><img src="img/santorini.jpg" alt="Caleb sitting on a cliff edge over the Santorini caldera"></div>
+          <figcaption>Santorini</figcaption>
+        </figure>
+        <figure class="pol t3 c-ecl rv" data-s="2" data-fx="left" style="--r:3deg">
+          <div class="ph"><img src="img/eclipse.jpg" alt="Total solar eclipse above the lit-up Alcázar of Segovia"></div>
+          <figcaption>total eclipse, Segovia</figcaption>
+        </figure>
+        <figure class="pol t2 c-balc rv" data-s="3" data-fx="right" style="--r:5deg">
+          <div class="ph">
+            <img src="img/balcony.jpg" alt="Madrid rooftops from Caleb's balcony, with a black sweater with red lettering on the railing">
+            <svg class="arrow" viewBox="0 0 100 177.7" aria-hidden="true">
+              <path pathLength="1" d="M28 47 C 26 72, 42 90, 62 99"/>
+              <path pathLength="1" d="M54 100.5 L62 99 L58 92"/>
+            </svg>
+            <span class="note">I designed this sweater</span>
+          </div>
+          <figcaption>my balcony</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · great time -->
+  <section class="slide" aria-label="Reason 4">
+    <div class="wrap split">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <p class="eyebrow rv" data-s="0">reason no. 4</p>
+        <h2 class="rv" data-s="0" style="--d:.1s">I would show you a <mark class="pk">great time</mark></h2>
+        <p class="lead soft rv" data-s="0" style="--d:.25s">What qualifies me in this department, you ask?</p>
+      </div>
+      <ul class="quals">
+        <li class="qual rv" data-s="1" data-fx="right">
+          <figure class="pol"><div class="ph"><img src="img/party.jpg" alt="A table set for a party with snacks, flowers and rose petals"></div></figure>
+          <p>I host a lot of parties for my friends and always get compliments on how good of a host I am</p>
+        </li>
+        <li class="qual rv" data-s="2" data-fx="right">
+          <figure class="pol t2" style="--r:3deg"><div class="ph"><img src="img/baby.jpg" alt="Baby Caleb in a gingham bucket hat and denim overalls"></div></figure>
+          <p>I am the password child of my family <span class="trophy">🏆</span><br><span class="hand soft" style="font-size:.95em">(pictured: the password child)</span></p>
+        </li>
+        <li class="qual rv" data-s="3" data-fx="right" style="grid-template-columns:1fr">
+          <p>I am high in openness &amp; extroversion according to the Big 5 personality traits</p>
+          <div class="bars">
+            <div class="bar"><span>Openness</span><b><i style="--w:92%"></i></b><em>high</em></div>
+            <div class="bar"><span>Extroversion</span><b><i style="--w:95%"></i></b><em>high</em></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6 · cat -->
+  <section class="slide" aria-label="Reason 5">
+    <div class="wrap split">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <p class="eyebrow rv" data-s="0">reason no. 5</p>
+        <h2 class="rv" data-s="0" style="--d:.1s">You can <mark>godmother</mark> my cat</h2>
+        <p class="lead rv" data-s="2">And maybe befriend her, if she likes you.</p>
+      </div>
+      <div class="cats">
+        <figure class="pol p1 t3 rv" data-s="1" data-fx="pop" style="--r:-4deg">
+          <div class="ph"><img src="img/cat.jpg" alt="Poof, a grey tabby cat, sitting in front of flowers"></div>
+          <figcaption>Poof</figcaption>
+        </figure>
+        <figure class="pol p2 rv" data-s="2" data-fx="pop" style="--r:5deg">
+          <div class="ph"><video src="img/poof.mp4" poster="img/poof-poster.jpg" muted autoplay loop playsinline aria-label="Poof standing on her hind legs peeking over a chair"></video></div>
+          <figcaption>Poof, reviewing your application</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · cooking -->
+  <section class="slide" aria-label="Reason 6">
+    <div class="wrap split">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <p class="eyebrow rv" data-s="0">reason no. 6</p>
+        <div class="vs">
+          <p class="rv" data-s="0" style="--d:.15s"><span class="who">you:</span> cannot cook <span class="emo">🙂‍↔️</span></p>
+          <p class="rv" data-s="1" data-fx="pop"><span class="who">me:</span> can <span class="emo">🙂</span></p>
+        </div>
+      </div>
+      <figure class="pol food t2 rv" data-s="2" data-fx="drop" style="--r:-3deg">
+        <div class="ph"><img src="img/food.jpg" alt="Candlelit table with baked pasta, grapes, chocolate pretzel rods and wine"></div>
+        <figcaption>exhibit A: a dinner I made</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 8 · fine print -->
+  <section class="slide" aria-label="Reasons 7 to 10">
+    <div class="wrap">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <p class="eyebrow rv" data-s="0">reasons no. 7–10</p>
+        <h2 class="rv" data-s="0" style="--d:.1s">Additional supporting evidence</h2>
+      </div>
+      <ul class="fine">
+        <li class="rv" data-s="1" data-fx="left"><span>I am very humble and have no flaws whatsoever</span><span class="stamp rv" data-s="1" data-fx="stamp">VERIFIED ✓</span></li>
+        <li class="rv" data-s="2" data-fx="left"><span>I hired 3 Etsy witches to put a spell on you</span><span class="witches" aria-hidden="true"><span>🧙‍♀️</span><span>🧙‍♀️</span><span>🧙‍♀️</span></span></li>
+        <li class="rv" data-s="3" data-fx="left"><span>You seem fun to get to know</span></li>
+        <li class="rv" data-s="4" data-fx="left"><span>Our aesthetics lowkey match</span>
+          <figure class="pol mini t3"><div class="ph"><img src="img/ceiling.jpg" alt="Looking up at a stained-glass skylight in an ornate white atrium"></div><figcaption>exhibit: aesthetic</figcaption></figure>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 9 · the question -->
+  <section class="slide ask-slide" aria-label="The question" id="askSlide">
+    <div class="wrap">
+      <p class="eyebrow rv" data-s="0" style="rotate:0deg">so, in conclusion…</p>
+      <h1 class="rv" data-s="0" style="--d:.15s">Will you go on a date with me?</h1>
+      <div class="btns rv" data-s="0" style="--d:.4s" id="btns">
+        <button class="btn yes" id="yes" type="button">Yes</button>
+        <button class="btn no" id="no" type="button">No</button>
+      </div>
+      <div class="approved" id="approved" hidden>
+        <div class="big">APPROVED ✓</div>
+        <p class="lead" style="text-align:center">Great choice. Now screenshot this and send it to me so I can start planning 🙂</p>
+        <button class="restart" id="restart" type="button">← watch it again</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav" aria-label="Slide controls">
+  <button id="prev" type="button" aria-label="Previous">‹</button>
+  <div class="dots" id="dots" aria-hidden="true"></div>
+  <button id="next" type="button" aria-label="Next">›</button>
+</nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.3/confetti.browser.min.js"></script>
+<script>
+(function(){
+  const HEART = 'M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.9 1.3 5.3 3.2 1.4-1.9 3.1-3.2 5.3-3.2 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z';
+  const stage = document.getElementById('stage');
+  const slides = [...document.querySelectorAll('.slide')];
+  const dotsEl = document.getElementById('dots');
+  const prevBtn = document.getElementById('prev'), nextBtn = document.getElementById('next');
+  let si = 0, st = 0, maxSeen = 0;
+
+  // floating hearts
+  const hearts = document.getElementById('hearts');
+  const hc = ['#C8673B','#B8862F','#9EA163','#C9B39A'];
+  const floaters = ['🍝','🐈','🏆','🔮','🦉','🌘','🍝','🐈','🧙‍♀️','🏆','🦉','🔮','🍷','🌘'];
+  floaters.forEach((f, i) => {
+    const s = 16 + Math.random()*16;
+    hearts.insertAdjacentHTML('beforeend',
+      `<span style="font-size:${s}px;left:${(i/floaters.length)*100 + Math.random()*6}%;animation-duration:${18+Math.random()*16}s;animation-delay:-${Math.random()*34}s">${f}</span>`);
+  });
+  // progress hearts
+  slides.forEach(() => dotsEl.insertAdjacentHTML('beforeend', `<svg viewBox="0 0 24 24"><path d="${HEART}"/></svg>`));
+  const dots = [...dotsEl.children];
+
+  const maxStep = s => Math.max(0, ...[...s.querySelectorAll('[data-s]')].map(e => +e.dataset.s));
+
+  function render(){
+    maxSeen = Math.max(maxSeen, si);
+    slides.forEach((s, i) => {
+      s.classList.toggle('cur', i === si);
+      s.classList.toggle('past', i < si);
+      s.setAttribute('aria-hidden', i === si ? 'false' : 'true');
+      s.querySelectorAll('[data-s]').forEach(e => e.classList.toggle('on', i === si && +e.dataset.s <= st));
+      const v = s.querySelector('video');
+      if (v) { if (i === si) { v.play && v.play().catch(()=>{}); } }
+    });
+    dots.forEach((d, i) => { d.classList.toggle('seen', i <= maxSeen); d.classList.toggle('now', i === si); });
+    prevBtn.disabled = si === 0 && st === 0;
+    nextBtn.disabled = si === slides.length - 1;
+  }
+  function next(){
+    if (st < maxStep(slides[si])) st++;
+    else if (si < slides.length - 1) { si++; st = 0; }
+    render();
+  }
+  function prev(){
+    if (st > 0) st--;
+    else if (si > 0) { si--; st = maxStep(slides[si]); }
+    render();
+  }
+
+  // tap: left third goes back, rest goes forward
+  let swallowClick = false;
+  stage.addEventListener('click', e => {
+    if (swallowClick) { swallowClick = false; return; }
+    if (e.target.closest('button, a')) return;
+    if (si === slides.length - 1 && e.clientX > innerWidth*0.3) return;
+    (e.clientX < innerWidth*0.3) ? prev() : next();
+  });
+  // swipe
+  let tx = 0, ty = 0;
+  stage.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, {passive:true});
+  stage.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)*1.3) {
+      swallowClick = true; setTimeout(() => swallowClick = false, 400);
+      dx < 0 ? next() : prev();
+    }
+  }, {passive:true});
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+  addEventListener('keydown', e => {
+    if (e.target.closest && e.target.closest('button') && (e.key === 'Enter' || e.key === ' ')) return;
+    if (['ArrowRight','ArrowDown','PageDown',' ','Enter'].includes(e.key)) { e.preventDefault(); next(); }
+    if (['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+  });
+
+  // the runaway "No"
+  const ask = document.getElementById('askSlide');
+  const yes = document.getElementById('yes'), no = document.getElementById('no');
+  const lines = ['No','are you sure?','really?','wrong button','try the pink one','🙂‍↔️','nope','the other one'];
+  let dodges = 0;
+  function dodge(e){
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    dodges++;
+    no.textContent = lines[dodges % lines.length];
+    yes.style.setProperty('--ys', Math.min(1 + dodges*0.12, 1.9));
+    const area = ask.getBoundingClientRect();
+    if (!no.classList.contains('loose')) {
+      const r = no.getBoundingClientRect();
+      no.style.left = (r.left - area.left) + 'px';
+      no.style.top = (r.top - area.top + ask.scrollTop) + 'px';
+      no.classList.add('loose');
+      void no.offsetWidth;
+    }
+    const w = no.offsetWidth, h = no.offsetHeight;
+    const yr = yes.getBoundingClientRect();
+    let x, y, tries = 0;
+    do {
+      x = 16 + Math.random() * Math.max(1, area.width - w - 32);
+      y = 24 + Math.random() * Math.max(1, area.height - h - 110);
+      tries++;
+    } while (tries < 30 &&
+      x + area.left < yr.right + 12 && x + area.left + w > yr.left - 12 &&
+      y + area.top < yr.bottom + 12 && y + area.top + h > yr.top - 12);
+    no.style.left = x + 'px';
+    no.style.top = (y + ask.scrollTop) + 'px';
+  }
+  no.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') dodge(e); });
+  no.addEventListener('pointerdown', dodge);
+  no.addEventListener('click', dodge);
+  no.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') dodge(e); });
+
+  yes.addEventListener('click', e => {
+    e.stopPropagation();
+    document.getElementById('btns').hidden = true;
+    no.hidden = true;
+    const ap = document.getElementById('approved');
+    ap.hidden = false;
+    ap.querySelector('.big').classList.add('rv','on'); ap.querySelector('.big').dataset.fx = 'stamp';
+    if (window.confetti && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const colors = ['#C8673B','#E3A15F','#9EA163','#F2E4CF','#8E3F20'];
+      confetti({particleCount:140, spread:80, origin:{y:.65}, colors});
+      setTimeout(() => confetti({particleCount:80, angle:60, spread:60, origin:{x:0, y:.7}, colors}), 250);
+      setTimeout(() => confetti({particleCount:80, angle:120, spread:60, origin:{x:1, y:.7}, colors}), 400);
+    }
+  });
+  document.getElementById('restart').addEventListener('click', e => {
+    e.stopPropagation();
+    si = 0; st = 0; dodges = 0;
+    document.getElementById('btns').hidden = false;
+    document.getElementById('approved').hidden = true;
+    no.hidden = false; no.classList.remove('loose'); no.style.left = no.style.top = ''; no.textContent = 'No';
+    yes.style.removeProperty('--ys');
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
